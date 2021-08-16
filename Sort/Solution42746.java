@@ -1,132 +1,40 @@
 import java.util.*;
+import java.util.stream.*;
 
-class Solution42746 {
-
-    class Node {
-        private int num;
-        private Node left;
-        private Node right;
-
-        Node(int num) {
-            this.num = num;
-            this.left = null;
-            this.right = null;
-        }
-
-        Node(int num, Node left, Node right) {
-            this.num = num;
-            this.left = left;
-            this.right = right;
-        }
-    }
-
-    Node root = null;
-    List<Integer> answerList = new ArrayList<>();
-
+class Solution {
     public String solution(int[] numbers) {
-
         String answer = "";
-
-        for (int i : numbers) {
-
-            if (root == null) {
-                root = new Node(i);
-                continue;
-            }
-
-            Node cur = root;
-            while (true) {
-                // 숫자i가 크면 왼쪽
-                // 작으면 오른쪽
-                boolean flag = isBigger(i, cur.num);
-                if (flag) {
-                    if (cur.left == null) {
-                        cur.left = new Node(i);
-                        break;
-                    }
-                    cur = cur.left;
-                    // 왼쪽 비어있으면 추가
-                    // 아니면 더 내려감.
-                } else {
-                    if (cur.right == null) {
-                        cur.right = new Node(i);
-                        break;
-                    }
-                    cur = cur.right;
+        List<Integer> list = new ArrayList<>();
+        for(int i : numbers){
+            list.add(i);
+        }
+         Collections.sort(list, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer s1, Integer s2) {
+                int val1 = Integer.parseInt(Integer.toString(s1) + Integer.toString(s2));
+                int val2 = Integer.parseInt(Integer.toString(s2) + Integer.toString(s1));
+                int diff = val1 - val2;
+                System.out.println(s1 + " " + s2 + " ");
+                System.out.println(val1 + " " + val2 + " " + "diff : " + diff);
+                if(diff >= 0){
+                    return -1;
+                }else{
+                    return 1;
                 }
             }
+        });
+        System.out.println("sort result : ");
+        for(Integer i : numbers){
+            System.out.print(i + " ");
         }
-
-        // 트리 순회
-        // answer = inorderTraverse(root, answer);
-        inorderTraverse(root, answer);
-        for (Integer i : answerList) {
+         System.out.println("-- sort result : ");
+        for(Integer i : numbers){
+            // System.out.print(i + " ");
             answer += Integer.toString(i);
+            System.out.println("answer : " + answer);
         }
-
+        //if()
+        //answer = Long.toString(Long.parseLong(answer));
         return answer;
     }
-
-    public void inorderTraverse(Node n, String answer) {
-        if (n != null) {
-            // answer += Integer.toString(n.num);
-            inorderTraverse(n.left, answer);
-            if (!answerList.isEmpty() && answerList.get(0) == 0) {
-                return;
-            }
-
-            answerList.add(n.num);
-            // System.out.println("num : " + n.num);
-            // answer = answer + Integer.toString(n.num);
-            // System.out.println(answer);
-
-            inorderTraverse(n.right, answer);
-            // return answer;
-        }
-        // return answer;
-    }
-
-    public boolean isBigger(int v1, int v2) {
-        while (true) {
-            int[] res1 = getFirstNum(v1);
-            int[] res2 = getFirstNum(v2);
-            if (res1[0] > res2[0]) {
-                return true;
-            } else if (res1[0] == res2[0]) {
-                // i가 한자리수 일 때
-                // 둘다 한자리수
-                if (res1[1] == 1 && res2[1] == 1) {
-                    return true;
-                    // res1만 한자리수
-                } else if (res1[1] == 1 && res2[1] != 1) {
-                    v2 = v2 - res2[0] * res2[1];
-                    // res2만 한자리수
-                } else if (res1[1] != 1 && res2[1] == 1) {
-                    v1 = v1 - res1[0] * res1[1];
-                } else {
-                    v1 = v1 - res1[0] * res1[1];
-                    v2 = v2 - res2[0] * res2[1];
-                }
-            } else {
-                return false;
-            }
-
-        }
-    }
-
-    public int[] getFirstNum(int i) {
-        int[] res = new int[2]; // {앞자리수, 자리수*10}
-        int cnt = 1;
-
-        while (true) {
-            if (i >= 0 && i < 10) {
-                res[0] = i;
-                res[1] = cnt;
-                return res;
-            }
-            i /= 10;
-            cnt *= 10;
-        }
-    }
-
 }
