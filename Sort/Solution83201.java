@@ -10,20 +10,18 @@ class Solution83201 {
         
         for(int i = 0;i<scores.length;i++){
             list.clear();
+            int cnt = 0;
             for(int j = 0;j<scores.length;j++){
                 myself = scores[i][i];
+                if(scores[j][i] == myself){
+                     cnt +=1 ;
+                }
                 list.add(scores[j][i]);
             }
             Collections.sort(list);
             if(myself == list.get(0) || myself == list.get(list.size() -1)){
                 int idx = myself==list.get(0) ? 0:list.size()-1;
-                int cnt = 0;
-                for(Integer num : list){
-                    cnt = num == myself ? cnt+=1:cnt;
-                }
                 if(cnt == 1) list.remove(idx);
-                // long cnt = list.stream().filter(e -> e.equals(myself)).count();
-                // if(cnt != 1)list.remove(i);
             }
 
             double avg = list.stream().mapToInt(e -> e).average().getAsDouble();
