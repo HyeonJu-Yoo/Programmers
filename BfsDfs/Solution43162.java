@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class Solution43162 {
     public int solution(int n, int[][] computers) {
         int answer = 0;
 
